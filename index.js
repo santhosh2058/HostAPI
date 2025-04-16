@@ -17,7 +17,7 @@ app.get('/',(req,res)=>{
   res.send('<h1>Hello Santhosh</h1>');
 })
 const start = async()=>{
-  app.listen(PORT,()=>{
+  app.listen(PORT,"0.0.0.0",()=>{
     console.log(`listening on port ${PORT}`);
   })
 }
