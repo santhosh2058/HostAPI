@@ -16,7 +16,9 @@ export const getAllProducts = async(req,res)=>{
     queryObj.name={$regex:name,$options: "i"};
   }
 
+  
   let apiData=user.find(queryObj);
+  const totalProducts = await user.countDocuments();
   if(sort){
     let sortFix=sort.split(",").join(" ");
     apiData=apiData.sort(sortFix);
@@ -28,10 +30,12 @@ export const getAllProducts = async(req,res)=>{
 
   let page=Number(req.query.page)||1;
   let limit=Number(req.query.limit)|| 5;
+
+  let totalPages=Math.ceil(totalProducts/limit);
   let skip=(page-1)*limit;
   const data =  await apiData.skip(skip).limit(limit);
   const nBits=data.length;
-  res.status(200).json({data,"length":nBits},);
+  res.status(200).json({data,"length":nBits,"Current Page":page,"Total Products":totalProducts,"Total Pages":totalPages});
 }
 
 export const getAllProductsTesting = async(req,res)=>{
